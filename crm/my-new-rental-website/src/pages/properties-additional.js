@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Navbar from '../../components/Navbar';
+import Navbar from '../components/Navbar';
 import { useState } from 'react';
 
-export default function PropertyDetails() {
+export default function PropertyDetails( {properties = [] }) {
   const router = useRouter();
   const { id } = router.query;
   const [activeImage, setActiveImage] = useState(0);
@@ -159,4 +159,11 @@ export default function PropertyDetails() {
       </main>
     </div>
   );
+}
+export async function getServerSideProps() {
+  return {
+    props: {
+      properties: [] // Initially empty, will be populated client-side
+    }
+  }
 }

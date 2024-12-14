@@ -1,10 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',  // Enable static export
-  images: {
-    unoptimized: true  // Required for static export
+  // Add this if you're behind a proxy
+  poweredByHeader: false,
+  // If you need to handle the proxy
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Forwarded-Proto',
+            value: 'https',
+          },
+        ],
+      },
+    ]
   },
-  trailingSlash: true,  // Recommended for static export
 }
 
 module.exports = nextConfig

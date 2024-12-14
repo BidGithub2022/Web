@@ -3,13 +3,13 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { useState } from 'react';
 
-export default function PropertyDetails() {
+export default function PropertyDetails( { propertyData = {} }) {
   const router = useRouter();
   const { id } = router.query;
   const [activeImage, setActiveImage] = useState(0);
 
   // In a real app, fetch property data based on ID
-  const property = properties.find(p => p.id === parseInt(id));
+  const property = properties.find(p => p.id === parseInt(id)) || propertyData;
 
   if (!property) return <div>Loading...</div>;
 
@@ -159,4 +159,12 @@ export default function PropertyDetails() {
       </main>
     </div>
   );
+}
+export async function getServerSideProps({ params }) {
+  return {
+    props: {
+      propertyData: {}, // Initially empty, will be populated client-side
+      properties: []
+    }
+  }
 }

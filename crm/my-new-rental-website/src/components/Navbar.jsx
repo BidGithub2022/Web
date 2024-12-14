@@ -8,17 +8,17 @@ export default function Navbar() {
   return (
     <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-sm shadow-md">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-32">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
               src="/images/om-logo.png"
               alt="Om Logo"
-              width={40}
-              height={40}
-              className="w-auto h-8"
+              width={200}
+              height={200}
+              className="w-auto h-28"
             />
-            <span className="ml-2 text-xl font-bold text-gray-800">OmSmartStay</span>
+	  {/*   <span className="ml-2 text-xl font-bold text-gray-800">OmSmartStay</span>*/}
           </Link>
 
           {/* Desktop Navigation */}
@@ -35,7 +35,7 @@ export default function Navbar() {
             <Link href="/contact" className="text-gray-600 hover:text-blue-600">
               Contact
             </Link>
-            <Link href="/login"  className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors">
+            <Link href="/login"  className="bg-purple-700 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition-colors">
              Login / Register
             </Link>
             <Link 

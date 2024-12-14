@@ -31,7 +31,7 @@ export default function Home() {
             </p>
             <Link 
         href="/properties"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-lg font-semibold transition-colors duration-300"
+              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-full text-lg font-semibold transition-colors duration-300"
 >
            Explore Properties
          </Link>
@@ -59,7 +59,7 @@ export default function Home() {
             <p className="text-gray-600 mb-4">Starting from ₹9999/month</p>
             <Link 
               href="/properties"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-colors duration-300"
+              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full transition-colors duration-300"
             >
               View Details
             </Link>
@@ -99,13 +99,13 @@ export default function Home() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-16 px-4 bg-blue-600 text-white">
+      <section className="py-16 px-4 bg-purple-600 text-white">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Find Your Perfect Home?</h2>
           <p className="text-xl mb-8">Browse our available properties and start your journey today.</p>
           <Link 
             href="/properties"
-            className="inline-block bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
+            className="inline-block bg-white text-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
           >
             Get Started
           </Link>
