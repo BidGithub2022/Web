@@ -1,21 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Add this if you're behind a proxy
-  poweredByHeader: false,
-  // If you need to handle the proxy
-  async headers() {
-    return [
+  images: {
+    unoptimized: true,
+    remotePatterns: [
       {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-Forwarded-Proto',
-            value: 'https',
-          },
-        ],
+        protocol: 'https',
+        hostname: '**',
       },
-    ]
+    ],
   },
+  output: 'standalone',
 }
 
 module.exports = nextConfig

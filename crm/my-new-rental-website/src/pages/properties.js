@@ -3,7 +3,36 @@ import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Sample property data (replace with your actual data)
+// Image with fallback and loading state
+const ImageWithFallback = ({ src, alt, ...props }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  return (
+    <>
+      {loading && !error && (
+        <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+      )}
+      <Image
+        {...props}
+        src={imgSrc}
+        alt={alt}
+        onError={() => {
+          console.error('Image failed to load:', src);
+          setError(true);
+          setImgSrc('/images/Property-1-room.png');
+        }}
+        onLoadingComplete={() => {
+          console.log('Image loaded successfully:', src);
+          setLoading(false);
+        }}
+      />
+    </>
+  );
+};
+
+// Property data
 const properties = [
   {
     id: 1,
@@ -25,14 +54,53 @@ const properties = [
       "Food Available",
     ]
   },
-  // Add more properties...
+  {
+    id: 2,
+    title: "Double Occupancy Room - Patia",
+    location: "Patia, Bhubaneswar",
+    price: "₹6,000/month",
+    mainImage: "/images/Property-2-room.png",
+    images: [
+      "/images/Property-2-room.png",
+      "/images/Property-3-room.png",
+      "/images/Property-1-room.png",
+    ],
+    amenities: ["AC", "Shared Bathroom", "WiFi", "Power Backup"],
+    description: "Comfortable double occupancy room with essential amenities...",
+    features: [
+      "24/7 Security",
+      "Weekly Cleaning",
+      "Laundry Service",
+      "Food Available",
+    ]
+  },
+  {
+    id: 3,
+    title: "Triple Sharing Room - Patia",
+    location: "Patia, Bhubaneswar",
+    price: "₹4,000/month",
+    mainImage: "/images/Property-3-room.png",
+    images: [
+      "/images/Property-3-room.png",
+      "/images/Property-1-room.png",
+      "/images/Property-2-room.png",
+    ],
+    amenities: ["Fan", "Shared Bathroom", "WiFi", "Power Backup"],
+    description: "Economical triple sharing room with basic amenities...",
+    features: [
+      "24/7 Security",
+      "Weekly Cleaning",
+      "Common Laundry Area",
+      "Food Available",
+    ]
+  }
 ];
 
 export default function Properties() {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Modal for property details
+  // Modal component
   const PropertyModal = ({ property, onClose }) => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -40,11 +108,14 @@ export default function Properties() {
           <div className="p-6">
             {/* Image Gallery */}
             <div className="relative h-64 md:h-96 mb-6">
-              <Image
+              <ImageWithFallback
                 src={property.images[currentImageIndex]}
-                alt={property.title}
+                alt={`${property.title} - Image ${currentImageIndex + 1}`}
                 fill
-                className="object-cover rounded-lg"
+                style={{ objectFit: 'cover' }}
+                className="rounded-lg"
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                priority
               />
               {/* Image Navigation */}
               <div className="absolute inset-0 flex items-center justify-between p-4">
@@ -53,6 +124,7 @@ export default function Properties() {
                     prev === 0 ? property.images.length - 1 : prev - 1
                   )}
                   className="bg-white p-2 rounded-full shadow hover:bg-gray-100"
+                  aria-label="Previous image"
                 >
                   ←
                 </button>
@@ -61,6 +133,7 @@ export default function Properties() {
                     prev === property.images.length - 1 ? 0 : prev + 1
                   )}
                   className="bg-white p-2 rounded-full shadow hover:bg-gray-100"
+                  aria-label="Next image"
                 >
                   →
                 </button>
@@ -78,8 +151,7 @@ export default function Properties() {
               <ul className="grid grid-cols-2 gap-2">
                 {property.amenities.map((amenity, index) => (
                   <li key={index} className="flex items-center">
-                    <span className="mr-2">✓</span>
-                    {amenity}
+                    <span className="mr-2">✓</span> {amenity}
                   </li>
                 ))}
               </ul>
@@ -94,9 +166,8 @@ export default function Properties() {
                   <li>Booking availability</li>
                   <li>Contact information</li>
                 </ul>
-                
                 <Link 
-                  href="/login"
+                  href="/login" 
                   className="block text-center bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors mt-6"
                 >
                   Register to View More
@@ -120,7 +191,6 @@ export default function Properties() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
       <main className="pt-16">
         <div className="max-w-7xl mx-auto px-4 py-16">
           <h1 className="text-3xl font-bold mb-8">Available Properties</h1>
@@ -128,23 +198,27 @@ export default function Properties() {
           {/* Property Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((property) => (
-              <div 
+              <div
                 key={property.id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
                 {/* Property Card */}
                 <div className="relative h-48">
-                  <Image
+                  <ImageWithFallback
                     src={property.mainImage}
                     alt={property.title}
                     fill
-                    className="object-cover"
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={property.id <= 3}
                   />
                 </div>
                 <div className="p-6">
                   <h2 className="text-xl font-semibold mb-2">{property.title}</h2>
                   <p className="text-gray-600 mb-4">{property.location}</p>
-                  <p className="text-lg font-semibold text-purple-600 mb-4">{property.price}</p>
+                  <p className="text-lg font-semibold text-purple-600 mb-4">
+                    {property.price}
+                  </p>
                   <button
                     onClick={() => setSelectedProperty(property)}
                     className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors"
@@ -160,8 +234,8 @@ export default function Properties() {
 
       {/* Property Details Modal */}
       {selectedProperty && (
-        <PropertyModal 
-          property={selectedProperty} 
+        <PropertyModal
+          property={selectedProperty}
           onClose={() => {
             setSelectedProperty(null);
             setCurrentImageIndex(0);
