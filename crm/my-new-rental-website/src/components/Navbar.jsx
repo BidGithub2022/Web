@@ -1,141 +1,63 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
-    <nav className="fixed w-full z-50 bg-white/90 backdrop-blur-sm shadow-md">
+    <nav className="bg-white shadow-sm relative">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-32">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
+        <div className="flex items-center">
+          {/* Logo Section */}
+          <div className="relative w-[200px] h-[100px] py-2">
             <Image
-              src="/images/om-logo.png"
-              alt="Om Logo"
-              width={200}
-              height={200}
-              className="w-auto h-28"
+              src="/images/Logo.jpeg"
+              alt="Company Logo"
+              fill
+              style={{ 
+                objectFit: 'contain',
+                objectPosition: 'left center'
+              }}
+              priority
             />
-	  {/*   <span className="ml-2 text-xl font-bold text-gray-800">OmSmartStay</span>*/}
-          </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-600 hover:text-blue-600">
+          {/* Navigation Links - Added Properties tab */}
+          <div className="flex space-x-6">
+            <Link 
+              href="/"
+              className="text-gray-700 hover:text-purple-600 font-medium transition-colors py-4"
+            >
               Home
             </Link>
-            <Link href="/about" className="text-gray-600 hover:text-blue-600">
-              About
-            </Link>
-            <Link href="/properties" className="text-gray-600 hover:text-blue-600">
+            <Link 
+              href="/properties"
+              className="text-gray-700 hover:text-purple-600 font-medium transition-colors py-4"
+            >
               Properties
             </Link>
-            <Link href="/contact" className="text-gray-600 hover:text-blue-600">
-              Contact
-            </Link>
-            <Link href="/login"  className="bg-purple-700 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition-colors">
-             Login / Register
+            <Link 
+              href="/about"
+              className="text-gray-700 hover:text-purple-600 font-medium transition-colors py-4"
+            >
+              About
             </Link>
             <Link 
-              href="https://omsmartstay-app.streamlit.app/"
-              target="_blank"
-              rel="noopener noreferrer" 
-              className="text-gray-600 hover:text-blue-600 flex items-center"
+              href="/contact"
+              className="text-gray-700 hover:text-purple-600 font-medium transition-colors py-4"
             >
-              Operations & Maintenance
-              <svg 
-                className="w-4 h-4 ml-1" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
+              Contact Us
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {/* Auth button */}
+          <div className="ml-auto">
+            <Link 
+              href="/login"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors px-6 py-2 rounded-full"
             >
-              {isMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link
-                href="/"
-                className="block px-3 py-2 text-gray-600 hover:text-blue-600"
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                className="block px-3 py-2 text-gray-600 hover:text-blue-600"
-              >
-                About
-              </Link>
-              <Link
-                href="/properties"
-                className="block px-3 py-2 text-gray-600 hover:text-blue-600"
-              >
-                Properties
-              </Link>
-              <Link
-                href="/contact"
-                className="block px-3 py-2 text-gray-600 hover:text-blue-600"
-              >
-                Contact
-              </Link>
-              <Link
-                href="https://omsmartstay-app.streamlit.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block px-3 py-2 text-gray-600 hover:text-blue-600 flex items-center"
-              >
-                Operations & Maintenance
-                <svg 
-                  className="w-4 h-4 ml-1" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
-              </Link>
-            </div>
+              Login/Register
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
