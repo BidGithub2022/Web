@@ -1,18 +1,11 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/OMSMARTSTAY_RESOURCES';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
+  throw new Error('Please define the MONGODB_URI environment variable inside .env');
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
 let cached = global.mongoose;
 
 if (!cached) {
@@ -26,22 +19,28 @@ async function connectDB() {
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts)
+      .then((mongoose) => {
+        console.log('MongoDB Connected Successfully!');
+        return mongoose;
+      })
+      .catch((err) => {
+        console.error('MongoDB Connection Error:', err);
+        throw err;
+      });
   }
 
   try {
     cached.conn = await cached.promise;
+    return cached.conn;
   } catch (e) {
     cached.promise = null;
     throw e;
   }
-
-  return cached.conn;
 }
 
 export default connectDB;

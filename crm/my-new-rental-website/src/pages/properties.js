@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Image path helper function
+const getImagePath = (imageName) => {
+  return `/images/${imageName}`;
+};
+
 // Image with fallback and loading state
-const ImageWithFallback = ({ src, alt, ...props }) => {
+const ImageWithFallback = ({ src, alt, isDetail = false, ...props }) => {
   const [imgSrc, setImgSrc] = useState(src);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setImgSrc(src);
+    setLoading(true);
+    setError(false);
+  }, [src]);
 
   return (
     <>
@@ -21,7 +32,11 @@ const ImageWithFallback = ({ src, alt, ...props }) => {
         onError={() => {
           console.error('Image failed to load:', src);
           setError(true);
-          setImgSrc('/images/Property-1-room.png');
+          setLoading(false);
+          const fallbackImage = isDetail ? 
+            getImagePath('Property-1-room.png') : 
+            getImagePath('Property-1.png');
+          setImgSrc(fallbackImage);
         }}
         onLoadingComplete={() => {
           console.log('Image loaded successfully:', src);
@@ -39,11 +54,11 @@ const properties = [
     title: "Single Occupancy Room - Patia",
     location: "Patia, Bhubaneswar",
     price: "₹8,000/month",
-    mainImage: `${process.env.NEXT_PUBLIC_BASE_URL || ''}/images/Property-1-room.png`,
+    mainImage: getImagePath('Property-1-room.png'),
     images: [
-      `${process.env.NEXT_PUBLIC_BASE_URL || ''}/images/Property-1-room.png`,
-      `${process.env.NEXT_PUBLIC_BASE_URL || ''}/images/Property-2-room.png`,
-      `${process.env.NEXT_PUBLIC_BASE_URL || ''}/images/Property-3-room.png`,
+      getImagePath('Property-1-room.png'),
+      getImagePath('Property-2-room.png'),
+      getImagePath('Property-3-room.png'),
     ],
     amenities: ["AC", "Attached Bathroom", "WiFi", "Power Backup"],
     description: "Fully furnished single occupancy room with modern amenities...",
@@ -59,11 +74,11 @@ const properties = [
     title: "Double Occupancy Room - Patia",
     location: "Patia, Bhubaneswar",
     price: "₹6,000/month",
-    mainImage: "/images/Property-2-room.png",
+    mainImage: getImagePath('Property-2-room.png'),
     images: [
-      "/images/Property-2-room.png",
-      "/images/Property-3-room.png",
-      "/images/Property-1-room.png",
+      getImagePath('Property-1-room.png'),
+      getImagePath('Property-2-room.png'),
+      getImagePath('Property-3-room.png'),
     ],
     amenities: ["AC", "Shared Bathroom", "WiFi", "Power Backup"],
     description: "Comfortable double occupancy room with essential amenities...",
@@ -79,11 +94,11 @@ const properties = [
     title: "Triple Sharing Room - Patia",
     location: "Patia, Bhubaneswar",
     price: "₹4,000/month",
-    mainImage: "/images/Property-3-room.png",
+    mainImage: getImagePath('Property-3-room.png'),
     images: [
-      "/images/Property-3-room.png",
-      "/images/Property-1-room.png",
-      "/images/Property-2-room.png",
+      getImagePath('Property-1-room.png'),
+      getImagePath('Property-2-room.png'),
+      getImagePath('Property-3-room.png'),
     ],
     amenities: ["Fan", "Shared Bathroom", "WiFi", "Power Backup"],
     description: "Economical triple sharing room with basic amenities...",
@@ -100,7 +115,7 @@ export default function Properties() {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Modal component
+  // Modal for property details
   const PropertyModal = ({ property, onClose }) => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -116,6 +131,7 @@ export default function Properties() {
                 className="rounded-lg"
                 sizes="(max-width: 1024px) 100vw, 1024px"
                 priority
+                isDetail={true}
               />
               {/* Image Navigation */}
               <div className="absolute inset-0 flex items-center justify-between p-4">
@@ -166,8 +182,8 @@ export default function Properties() {
                   <li>Booking availability</li>
                   <li>Contact information</li>
                 </ul>
-                <Link 
-                  href="/login" 
+                <Link
+                  href="/login"
                   className="block text-center bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors mt-6"
                 >
                   Register to View More
@@ -211,6 +227,7 @@ export default function Properties() {
                     style={{ objectFit: 'cover' }}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={property.id <= 3}
+                    isDetail={false}
                   />
                 </div>
                 <div className="p-6">

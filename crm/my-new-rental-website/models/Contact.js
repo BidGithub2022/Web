@@ -1,33 +1,32 @@
 import mongoose from 'mongoose';
 
-const contactSchema = new mongoose.Schema({
+const ContactSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Name is required'],
+    required: [true, 'Please provide your name'],
     trim: true
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
-    trim: true,
-    lowercase: true
+    required: [true, 'Please provide your email'],
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
+    trim: true
   },
   phone: {
     type: String,
-    required: [true, 'Phone number is required'],
+    required: [true, 'Please provide your phone number'],
     trim: true
   },
   message: {
     type: String,
-    required: [true, 'Message is required'],
+    required: [true, 'Please provide a message'],
     trim: true
   },
   createdAt: {
     type: Date,
     default: Date.now
   }
-}, {
-  collection: 'CRM' // Using the same CRM collection
 });
 
-export default mongoose.models.Contact || mongoose.model('Contact', contactSchema);
+// Prevent model overwrite error in development
+export default mongoose.models.Contact || mongoose.model('Contact', ContactSchema);
