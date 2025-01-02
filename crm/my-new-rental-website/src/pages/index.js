@@ -54,21 +54,36 @@ export default function Home() {
   const propertyDetails = [
     {
       image: getImagePath('Property-1.png'),
-      address: "OmSmartStay+Coliving+Patia+Bhubaneswar",
+      address: "20°20'34.2\"N+85°49'51.1\"E",
+      mapUrl: "https://www.google.com/maps/place/20%C2%B020'34.2%22N+85%C2%B049'51.1%22E/@20.3428195,85.8282863,17z",
       title: "Patia",
-      price: "6999"
+      price: "9000",
+      coordinates: {
+        lat: 20.3428195,
+        lng: 85.8308612
+      }
     },
     {
       image: getImagePath('Property-2.png'),
-      address: "OmSmartStay+Coliving+Chandrasekharpur+Bhubaneswar",
-      title: "Chandrasekharpur",
-      price: "6999"
+      address: "20°20'34.2\"N+85°49'51.1\"E",
+      mapUrl: "https://www.google.com/maps/place/20%C2%B020'34.2%22N+85%C2%B049'51.1%22E/@20.3428195,85.8282863,17z",
+      title: "Patia",
+      price: "15000",
+      coordinates: {
+        lat: 20.3428195,
+        lng: 85.8308612
+      }
     },
     {
       image: getImagePath('Property-3.png'),
-      address: "OmSmartStay+Coliving+Infocity+Bhubaneswar",
-      title: "Infocity",
-      price: "6999"
+      address: "20°20'34.2\"N+85°49'51.1\"E",
+      mapUrl: "https://www.google.com/maps/place/20%C2%B020'34.2%22N+85%C2%B049'51.1%22E/@20.3428195,85.8282863,17z",
+      title: "Patia",
+      price: "8000",
+      coordinates: {
+        lat: 20.3428195,
+        lng: 85.8308612
+      }
     }
   ];
 
@@ -82,7 +97,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center">
             {/* Logo Section */}
-            <div className="relative w-[200px] h-[100px] py-2">
+            <Link href="/" className="relative w-[200px] h-[100px] py-2">
               <ImageWithFallback
                 src="/images/Logo.jpeg"
                 alt="Company Logo"
@@ -90,7 +105,7 @@ export default function Home() {
                 style={{ objectFit: 'contain', objectPosition: 'left center' }}
                 priority
               />
-            </div>
+            </Link>
             {/* Navigation Links */}
             <div className="flex space-x-6">
               <Link href="/" className="text-gray-700 hover:text-purple-600 font-medium transition-colors py-4">
@@ -123,10 +138,16 @@ export default function Home() {
             Featured Properties
           </h2>
           <div className="relative">
-            <button onClick={prevProperties} className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-4 rounded-r shadow-xl hover:bg-white text-2xl">
+            <button
+              onClick={prevProperties}
+              className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-4 rounded-r shadow-xl hover:bg-white text-2xl"
+            >
               ←
             </button>
-            <button onClick={nextProperties} className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-4 rounded-l shadow-xl hover:bg-white text-2xl">
+            <button
+              onClick={nextProperties}
+              className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-4 rounded-l shadow-xl hover:bg-white text-2xl"
+            >
               →
             </button>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -159,7 +180,7 @@ export default function Home() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                           <a
-                            href={`https://maps.google.com/?q=${property.address}`}
+                            href={property.mapUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-purple-600 hover:text-purple-700 font-medium"
@@ -167,7 +188,10 @@ export default function Home() {
                             {property.title}, Bhubaneswar
                           </a>
                         </div>
-                        <Link href="/properties" className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-full text-sm transition-all duration-300">
+                        <Link
+                          href="/properties"
+                          className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-full text-sm transition-all duration-300"
+                        >
                           View Details
                         </Link>
                       </div>
@@ -186,7 +210,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Find Your Perfect Home?</h2>
           <p className="text-xl mb-8">Browse our available properties and start your journey today.</p>
-          <Link href="/properties" className="inline-block bg-white text-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-300">
+          <Link
+            href="/properties"
+            className="inline-block bg-white text-purple-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
+          >
             Get Started
           </Link>
         </div>

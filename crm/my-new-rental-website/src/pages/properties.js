@@ -60,7 +60,7 @@ const properties = [
       getImagePath('Property-2-room.png'),
       getImagePath('Property-3-room.png'),
     ],
-    amenities: ["AC", "Attached Bathroom", "WiFi", "Power Backup"],
+    amenities: ["AC", "Attached Bathroom", "WiFi", "Power Backup", "Furnitures", "Hot Water", "Security"],
     description: "Fully furnished single occupancy room with modern amenities...",
     features: [
       "24/7 Security",
@@ -73,14 +73,14 @@ const properties = [
     id: 2,
     title: "Double Occupancy Room - Patia",
     location: "Patia, Bhubaneswar",
-    price: "₹6,000/month",
+    price: "₹9,000/month",
     mainImage: getImagePath('Property-2-room.png'),
     images: [
       getImagePath('Property-1-room.png'),
       getImagePath('Property-2-room.png'),
       getImagePath('Property-3-room.png'),
     ],
-    amenities: ["AC", "Shared Bathroom", "WiFi", "Power Backup"],
+    amenities: ["AC", "Shared Bathroom", "WiFi", "Power Backup", "Furnitures", "Hot Water", "Security"],
     description: "Comfortable double occupancy room with essential amenities...",
     features: [
       "24/7 Security",
@@ -93,14 +93,14 @@ const properties = [
     id: 3,
     title: "Triple Sharing Room - Patia",
     location: "Patia, Bhubaneswar",
-    price: "₹4,000/month",
+    price: "₹15,000/month",
     mainImage: getImagePath('Property-3-room.png'),
     images: [
       getImagePath('Property-1-room.png'),
       getImagePath('Property-2-room.png'),
       getImagePath('Property-3-room.png'),
     ],
-    amenities: ["Fan", "Shared Bathroom", "WiFi", "Power Backup"],
+    amenities: ["Fan", "Shared Bathroom", "WiFi", "Power Backup", "Furnitures", "Hot Water", "Security"],
     description: "Economical triple sharing room with basic amenities...",
     features: [
       "24/7 Security",
