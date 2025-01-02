@@ -27,7 +27,7 @@ export default function About() {
           <section>
             <h2 className="text-3xl font-bold mb-6 text-purple-900">Our Vision</h2>
             <p className="text-gray-600 leading-relaxed">
-              &ldquo;To provide hassle free rental house experience&rdquo;
+              &ldquo;To provide hassle free rental house experience.&rdquo;
             </p>
           </section>
 

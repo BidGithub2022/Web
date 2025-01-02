@@ -2,10 +2,7 @@ export default function handler(req, res) {
   console.log('Verify token API called');
 
   if (req.method !== 'GET') {
-    return res.status(405).json({ 
-      success: false, 
-      message: 'Method not allowed' 
-    });
+    return res.status(405).json({ success: false, message: 'Method not allowed' });
   }
 
   // Get the token from the Authorization header
@@ -13,10 +10,7 @@ export default function handler(req, res) {
   console.log('Auth header:', authHeader);
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ 
-      success: false, 
-      message: 'No token provided' 
-    });
+    return res.status(401).json({ success: false, message: 'No token provided' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -37,6 +31,14 @@ export default function handler(req, res) {
       email: 'john@example.com',
       phone: '9876543210',
       role: 'tenant'
+    },
+    // Add the level 2 staff token
+    'mock_jwt_token_for_level2_staff': {
+      id: 'STAFF123',
+      name: 'Satya Sahu',
+      email: 'sahu.satya@gmail.com',
+      role: 'staff_level2',
+      isVerified: true
     }
   };
 
@@ -44,10 +46,7 @@ export default function handler(req, res) {
   const userData = validTokens[token];
   if (!userData) {
     console.log('Invalid token');
-    return res.status(401).json({ 
-      success: false, 
-      message: 'Invalid token' 
-    });
+    return res.status(401).json({ success: false, message: 'Invalid token' });
   }
 
   console.log('Token verified for user:', userData.email);

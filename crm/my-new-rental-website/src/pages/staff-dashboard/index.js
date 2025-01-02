@@ -1,89 +1,102 @@
-import { useState, useEffect } from 'react';
-import StaffDashboardLayout from '../../components/StaffDashboardLayout';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function StaffDashboard() {
-  const [stats, setStats] = useState({
-    totalTenants: 0,
-    activeBookings: 0,
-    pendingMaintenance: 0,
-    availableRooms: 0
-  });
-
-  const [recentActivities, setRecentActivities] = useState([]);
+  const router = useRouter();
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch dashboard data
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
     const fetchDashboardData = async () => {
       try {
-        const token = localStorage.getItem('staffToken');
         const response = await fetch('/api/staff/dashboard', {
           headers: {
-            Authorization: `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
           }
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+
         const data = await response.json();
-        setStats(data.stats);
-        setRecentActivities(data.recentActivities);
+        if (data.success) {
+          setDashboardData(data.data);
+        } else {
+          throw new Error(data.message || 'Failed to load dashboard data');
+        }
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error('Dashboard error:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchDashboardData();
-  }, []);
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl text-red-600">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
-    <StaffDashboardLayout>
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Staff Dashboard</h1>
-        
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Total Tenants</h3>
-            <p className="text-2xl font-semibold">{stats.totalTenants}</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Active Bookings</h3>
-            <p className="text-2xl font-semibold">{stats.activeBookings}</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Pending Maintenance</h3>
-            <p className="text-2xl font-semibold">{stats.pendingMaintenance}</p>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-gray-500 text-sm">Available Rooms</h3>
-            <p className="text-2xl font-semibold">{stats.availableRooms}</p>
-          </div>
-        </div>
-
-        {/* Recent Activities */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6">
-            <h2 className="text-lg font-semibold mb-4">Recent Activities</h2>
-            <div className="space-y-4">
-              {recentActivities.map((activity, index) => (
-                <div key={index} className="flex items-center space-x-4 py-3 border-b">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{activity.description}</p>
-                    <p className="text-xs text-gray-500">{activity.timestamp}</p>
-                  </div>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    activity.type === 'booking' ? 'bg-green-100 text-green-800' :
-                    activity.type === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-blue-100 text-blue-800'
-                  }`}>
-                    {activity.type}
-                  </span>
+    <div className="min-h-screen bg-gray-100">
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-0">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            Staff Dashboard
+          </h1>
+          {dashboardData && (
+            <div className="mt-4">
+              <div className="bg-white shadow rounded-lg p-6">
+                <h2 className="text-lg font-medium">Staff Details</h2>
+                <div className="mt-4 space-y-2">
+                  <p><span className="font-medium">Name:</span> {dashboardData.name}</p>
+                  <p><span className="font-medium">Email:</span> {dashboardData.email}</p>
+                  <p><span className="font-medium">Staff ID:</span> {dashboardData.staffId}</p>
+                  <p><span className="font-medium">Role:</span> {dashboardData.role}</p>
                 </div>
-              ))}
+              </div>
+
+              {dashboardData.properties && (
+                <div className="mt-6 bg-white shadow rounded-lg p-6">
+                  <h2 className="text-lg font-medium">Properties</h2>
+                  <div className="mt-4 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {dashboardData.properties.map(property => (
+                      <div key={property.id} className="border rounded-lg p-4">
+                        <h3 className="font-medium">{property.name}</h3>
+                        <p className="text-gray-600">{property.location}</p>
+                        <p className="text-gray-600">Status: {property.status}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
-    </StaffDashboardLayout>
+    </div>
   );
 }
